@@ -43,7 +43,9 @@ B) 食品包装上的营养成分表
     "needsManualInput": false
   },
   "description": "简短描述识别到的内容"
-}`
+}
+
+重要：只输出 JSON，不要任何解释、思考过程或其他文字。`
 
 export async function analyzeImage(imageBase64, apiKey) {
   const base64Data = imageBase64.includes(',')
@@ -97,9 +99,13 @@ export async function analyzeImage(imageBase64, apiKey) {
 
   const data = await response.json()
   const content = data.content?.[0]?.text || ''
+  console.log('AI raw response:', content)
 
-  const jsonMatch = content.match(/\{[\s\S]*\}/)
+  // 去掉 <thinking>...</thinking> 块再提取 JSON
+  const stripped = content.replace(/<thinking>[\s\S]*?<\/thinking>/g, '')
+  const jsonMatch = stripped.match(/\{[\s\S]*\}/)
   if (!jsonMatch) {
+    console.error('无法找到 JSON，原始内容：', content)
     throw new Error('无法解析 AI 返回结果')
   }
 
