@@ -119,7 +119,7 @@ export function fileToBase64(file) {
   })
 }
 
-export function compressImage(file, maxWidth = 1024, quality = 0.8) {
+export function compressImage(file, maxWidth = 800, quality = 0.7) {
   return new Promise((resolve) => {
     const canvas = document.createElement('canvas')
     const ctx = canvas.getContext('2d')
@@ -128,13 +128,21 @@ export function compressImage(file, maxWidth = 1024, quality = 0.8) {
     img.onload = () => {
       let { width, height } = img
       if (width > maxWidth) {
-        height = (height * maxWidth) / width
+        height = Math.round((height * maxWidth) / width)
         width = maxWidth
       }
       canvas.width = width
       canvas.height = height
       ctx.drawImage(img, 0, 0, width, height)
-      resolve(canvas.toDataURL('image/jpeg', quality))
+
+      // 先用 quality 压一次，如果还超 500KB 继续降质量
+      let dataUrl = canvas.toDataURL('image/jpeg', quality)
+      let q = quality
+      while (dataUrl.length > 500 * 1024 * 1.37 && q > 0.2) {
+        q -= 0.1
+        dataUrl = canvas.toDataURL('image/jpeg', q)
+      }
+      resolve(dataUrl)
     }
 
     img.src = URL.createObjectURL(file)
