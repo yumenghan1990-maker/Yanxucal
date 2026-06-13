@@ -1,7 +1,6 @@
 // Claude Vision API 工具
-const API_BASE = import.meta.env.VITE_ANTHROPIC_BASE_URL || 'https://api.anthropic.com'
+const API_ENDPOINT = '/api/claude/v1/messages'
 const API_KEY = import.meta.env.VITE_ANTHROPIC_AUTH_TOKEN || ''
-const API_ENDPOINT = `${API_BASE}/v1/messages`
 const MODEL = 'claude-haiku-4-5-20251001'
 
 const FOOD_PROMPT = `你是一个专业的营养师和食物识别AI。请仔细分析这张图片。

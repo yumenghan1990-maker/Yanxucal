@@ -11,10 +11,10 @@ export default defineConfig({
         rewrite: (path) => path.replace(/^\/dashscope-api/, ''),
         secure: true
       },
-      '/claude-api': {
-        target: process.env.ANTHROPIC_BASE_URL || 'https://api.anthropic.com',
+      '/api/claude': {
+        target: process.env.ANTHROPIC_BASE_URL || 'https://api.aicodewith.com',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/claude-api/, ''),
+        rewrite: (path) => path.replace(/^\/api\/claude/, ''),
         secure: true,
         headers: {
           'x-api-key': process.env.ANTHROPIC_AUTH_TOKEN || '',

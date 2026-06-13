@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/claude/:path*",
+      "destination": "https://api.aicodewith.com/:path*"
+    }
+  ]
+}
